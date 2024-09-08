@@ -92,9 +92,9 @@ const loginuserpassword = async (req, res) => {
         res.cookie("token", token, {
             maxAge: 48 * 60 * 60 * 1000,
             secure: true,
-            sameSite: 'None'
+            sameSite: 'None',
+            httpOnly:false
         })
-        res.setHeader('Authorization', `Bearer ${token}`);
         res.status(200).json(new ApiResponse(true, "User Logged in Successfully"));
     } catch (error) {
         res.status(500).json(new ApiError(false, error.message));
@@ -138,10 +138,10 @@ const loginverifyotp = async (req, res) => {
             maxAge: 48 * 60 * 60 * 1000,
             secure:  true,
            sameSite: 'None',
+           httpOnly:false
         })
         await user.updateOne({ $unset: { otp: "" } });
         user.save();
-        res.setHeader('Authorization', `Bearer ${token}`);
         res.status(200).json(new ApiResponse(true, "User Logged in Successfully"));
     } catch (error) {
         res.status(500).json(new ApiError(false, error.message));
