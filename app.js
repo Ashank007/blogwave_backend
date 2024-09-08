@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 connectDb();
 app.use(cors({
-    origin:process.env.FRONTEND_URL,
+    origin:[process.env.FRONTEND_URL,"http://localhost:3000"],
     credentials:true,
     allowedHeaders: ['Authorization', 'Content-Type'],
     exposedHeaders: ['Authorization'] 
