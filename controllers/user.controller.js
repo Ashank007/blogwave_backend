@@ -94,7 +94,7 @@ const loginuserpassword = async (req, res) => {
             secure: true,
             sameSite: 'None',
         })
-        res.status(200).json(new ApiResponse(true, "User Logged in Successfully"));
+        res.status(200).json(new ApiResponse(true, {token:token}));
     } catch (error) {
         res.status(500).json(new ApiError(false, error.message));
     }
@@ -140,7 +140,7 @@ const loginverifyotp = async (req, res) => {
         })
         await user.updateOne({ $unset: { otp: "" } });
         user.save();
-        res.status(200).json(new ApiResponse(true, "User Logged in Successfully"));
+        res.status(200).json(new ApiResponse(true, {token:token}));
     } catch (error) {
         res.status(500).json(new ApiError(false, error.message));
     }
