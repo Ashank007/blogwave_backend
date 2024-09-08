@@ -93,7 +93,6 @@ const loginuserpassword = async (req, res) => {
             maxAge: 48 * 60 * 60 * 1000,
             secure: true,
             sameSite: 'None',
-            httpOnly:false
         })
         res.status(200).json(new ApiResponse(true, "User Logged in Successfully"));
     } catch (error) {
@@ -138,7 +137,6 @@ const loginverifyotp = async (req, res) => {
             maxAge: 48 * 60 * 60 * 1000,
             secure:  true,
            sameSite: 'None',
-           httpOnly:false
         })
         await user.updateOne({ $unset: { otp: "" } });
         user.save();
