@@ -71,7 +71,6 @@ const sendotp = async(req,res)=>{
 }
 const loginuserpassword = async (req, res) => {
     try {
-        //console.log('k');
         const { email, password } = req.body;
         if (!email || !password) {
             return res.status(400).json(new ApiResponse(false, "Email and Password are Required"));
@@ -92,7 +91,8 @@ const loginuserpassword = async (req, res) => {
         const token = generateToken({ _id: user._id, email: user.email }, process.env.JWT_SECRET)
         res.cookie("token", token, {
             maxAge: 48 * 60 * 60 * 1000,
-            secure: false,
+            secure: true,
+            sameSite: 'None'
         })
         res.status(200).json(new ApiResponse(true, "User Logged in Successfully"));
     } catch (error) {
@@ -135,8 +135,7 @@ const loginverifyotp = async (req, res) => {
         const token = generateToken({ _id: user._id, email: user.email }, process.env.JWT_SECRET)
         res.cookie("token", token, {
             maxAge: 48 * 60 * 60 * 1000,
-            secure: false,
-           httpOnly: true,
+            secure:  true,
            sameSite: 'None',
         })
         await user.updateOne({ $unset: { otp: "" } });
@@ -231,14 +230,11 @@ const forgotpasswordandchange = async (req, res) => {
     try {
         const { password } = req.body;
         const user = await User.findById(req.user._id);
-        //console.log(user);
-        //console.log(user.password);
         const isAuthenticated = await bcrypt.compare(password, user.password);
         if (isAuthenticated) {
             return res.status(400).json(new ApiResponse(true, "Previous Password and New Password Cant be Same"));
         }
         const hasedpassword = await bcrypt.hash(password, 10);
-        //console.log(hasedpassword);
         user.password = hasedpassword;
         await user.save();
         res.status(200).json(new ApiResponse(true, "Password Changed Successfully"));
