@@ -94,6 +94,7 @@ const loginuserpassword = async (req, res) => {
             secure: true,
             sameSite: 'None'
         })
+        res.setHeader('Authorization', `Bearer ${token}`);
         res.status(200).json(new ApiResponse(true, "User Logged in Successfully"));
     } catch (error) {
         res.status(500).json(new ApiError(false, error.message));
@@ -140,6 +141,7 @@ const loginverifyotp = async (req, res) => {
         })
         await user.updateOne({ $unset: { otp: "" } });
         user.save();
+        res.setHeader('Authorization', `Bearer ${token}`);
         res.status(200).json(new ApiResponse(true, "User Logged in Successfully"));
     } catch (error) {
         res.status(500).json(new ApiError(false, error.message));
@@ -356,7 +358,6 @@ const profiledetails = async (req, res) => {
         if (!url || !username || !interests) {
             return res.status(400).json(new ApiResponse(false, "Url,Username and Interest are required"));
         }
-
         const user = await User.findOne({email:email});
         if (!user) {
             return res.status(404).json(new ApiResponse(false, "User Not Found"));
@@ -371,11 +372,6 @@ const profiledetails = async (req, res) => {
         user.username = username;
         user.profilepic = url;
         await user.save();
-        const token = generateToken({ _id: user._id, email: user.email }, process.env.JWT_SECRET)
-        res.cookie("token", token, {
-            maxAge: 48 * 60 * 60 * 1000,
-            secure: false,
-        })
         res.status(200).json(new ApiResponse(true, "Information Updated Succesfully"));
     } catch (error) {
         res.status(500).json(new ApiError(false, error.message));
