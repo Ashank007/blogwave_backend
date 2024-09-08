@@ -10,7 +10,9 @@ const app = express();
 connectDb();
 app.use(cors({
     origin:process.env.FRONTEND_URL,
-    credentials:true
+    credentials:true,
+    allowedHeaders: ['Authorization', 'Content-Type'],
+    exposedHeaders: ['Authorization'] 
 }))
 app.use(express.json())
 app.use(cookieParser())
