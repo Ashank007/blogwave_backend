@@ -12,12 +12,6 @@ app.use(cors({
     origin:process.env.FRONTEND_URL,
     credentials:true
 }))
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-  res.setHeader('Access-Control-Expose-Headers', 'Authorization');
-  next();
-});
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
