@@ -257,7 +257,7 @@ const searchbytitle = async (req, res) => {
         const blog=[];
         for(let i=0;i<blogs.length;i++){
             const data ={
-                id: blogs[i].id,
+                id: blogs[i]._id,
                 title: blogs[i].title,
                 author: blogs[i].author,
                 coverpic: blogs[i].coverpic,
@@ -291,7 +291,7 @@ const searchbytags = async (req, res) => {
             for(let i = 0; i < blogs.length; i++) {
 
                 const data ={
-                    id: blogs[i].id,
+                    id: blogs[i]._id,
                     title: blogs[i].title,
                     author: blogs[i].author,
                     coverpic: blogs[i].coverpic,
